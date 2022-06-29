@@ -35,7 +35,6 @@ const postRegister = (req, res, next) => {
              */
             user.save((err) => {
                 if (err) {
-                    console.log("herer is error of register : ", err);
                     return next(createError(500));
                 }
 
