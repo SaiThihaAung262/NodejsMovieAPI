@@ -6,7 +6,7 @@ class User {
         this.userData = {...userData };
     }
     save(cb) {
-        dbCon("users", async(db) => {
+        dbCon("app_users", async(db) => {
             try {
                 const hashedPass = hashSync(this.userData["password"], 12);
                 this.userData["password"] = hashedPass;
@@ -20,7 +20,7 @@ class User {
 
     checkExistance() {
         return new Promise((resolve, reject) => {
-            dbCon("users", async(db) => {
+            dbCon("app_users", async(db) => {
                 try {
                     const user = await db.findOne({
                         $or: [
@@ -36,12 +36,12 @@ class User {
                     } else if (this.userData["username"] === user.username) {
                         resolve({
                             check: true,
-                            message: "this user name is already used",
+                            message: "This user name is already used",
                         });
                     } else if (this.userData["email"] === user.email) {
                         resolve({
                             check: true,
-                            message: "the email is already used",
+                            message: "This email is already used",
                         });
                     }
                 } catch (error) {
@@ -64,7 +64,7 @@ class User {
                 return resolve(error);
             }
 
-            dbCon("users", async(db) => {
+            dbCon("app_users", async(db) => {
                 try {
                     // find user
                     const user = await db.findOne({
