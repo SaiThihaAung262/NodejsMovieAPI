@@ -4,6 +4,6 @@ const { getMovies } = require("./movieController");
 
 module.exports = {
     postLogin,
-    getMovies,
     postRegister,
+    getMovies,
 };
