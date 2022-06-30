@@ -12,7 +12,7 @@ const postComment = (req, res, next) => {
      * text>req.body.text
      */
 
-    if (!ObjectID.isValid(req.query.movieId)) {
+    if (!ObjectID.isValid(req.body.movieId)) {
         return next(createError(400));
     }
 
@@ -34,7 +34,6 @@ const postComment = (req, res, next) => {
         .save()
         .then(() => {
             res.status(201).json({
-                err_code: 200,
                 err_message: "Comment created successfully",
             });
         })
@@ -43,6 +42,48 @@ const postComment = (req, res, next) => {
         });
 };
 
+const putComment = (req, res, next) => {
+    if (!ObjectID.isValid(req.body.commentId)) {
+        return next(createError(400));
+    }
+
+    const error = Comment.validate(req.body["text"]);
+
+    if (error) {
+        return next(error);
+    }
+
+    const commentId = new ObjectID(req.body.commentId);
+    Comment.edit(commentId, req.body.text)
+        .then(() => {
+            res.status(201).json({
+                err_message: "Update comment successfully",
+            });
+        })
+        .catch((error) => {
+            next(createError(500));
+        });
+};
+
+const deleteComment = (req, res, next) => {
+    if (!ObjectID.isValid(req.body.commentId)) {
+        return next(createError(400));
+    }
+    const commentId = new ObjectID(req.body.commentId);
+
+    Comment.delete(commentId)
+        .then(() => {
+            res.status(201).json({
+                err_message: "Delete comment successfully",
+            });
+        })
+        .catch((error) => {
+            next(createError(500));
+        });
+};
+
 module.exports = {
     postComment,
+    putComment,
+    deleteComment,
 };
