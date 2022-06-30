@@ -12,7 +12,7 @@ const postComment = (req, res, next) => {
      * text>req.body.text
      */
 
-    if (!ObjectID(req.query.movieId)) {
+    if (!ObjectID.isValid(req.query.movieId)) {
         return next(createError(400));
     }
 
