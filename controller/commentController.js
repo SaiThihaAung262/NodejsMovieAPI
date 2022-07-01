@@ -1,6 +1,7 @@
 const { ObjectID } = require("bson");
 const createError = require("http-errors");
 const { Comment } = require("../models");
+const { dbCon } = require("../configuration");
 
 const postComment = (req, res, next) => {
   /**
@@ -82,8 +83,44 @@ const deleteComment = (req, res, next) => {
     });
 };
 
+const getComment = (req, res, next) => {
+  if (isNaN(req.query.page) || isNaN(req.query.pagesize)) {
+    return next(createError(400));
+  }
+  let page = req.query.page ? parseInt(req.query.page) : 1;
+  let pageSize = req.query.pagesize ? parseInt(req.query.pagesize) : 10;
+
+  let searchParam = {};
+
+  if (req.query.movieId !== undefined) {
+    searchParam.movieId = new ObjectID(req.query.movieId);
+  }
+  const commentsToSkip = (page - 1) * pageSize;
+  dbCon("comments", async (db) => {
+    const movies = await db
+      .find(searchParam)
+      .skip(commentsToSkip)
+      .limit(pageSize)
+      .toArray();
+
+    const total = await db.find(searchParam).count();
+
+    if (movies.length > 0) {
+      res.json({
+        err_code: 200,
+        err_message: "Success",
+        total: total,
+        data: movies,
+      });
+    } else {
+      next(createError(404));
+    }
+  });
+};
+
 module.exports = {
   postComment,
   putComment,
   deleteComment,
+  getComment,
 };
