@@ -19,6 +19,7 @@ const getMovies = (req, res, next) => {
   dbCon("movies", async (db) => {
     const movies = await db
       .find(searchParam)
+      .sort({ createdAt: -1 })
       .skip(moviesToSkip)
       .limit(pageSize)
       .toArray();

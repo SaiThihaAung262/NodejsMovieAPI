@@ -99,6 +99,7 @@ const getComment = (req, res, next) => {
   dbCon("comments", async (db) => {
     const movies = await db
       .find(searchParam)
+      .sort({ createdAt: -1 })
       .skip(commentsToSkip)
       .limit(pageSize)
       .toArray();
