@@ -13,7 +13,10 @@ const postComment = (req, res, next) => {
    * text>req.body.text
    */
 
+  console.log(req.body);
+
   if (!ObjectID.isValid(req.body.movieId)) {
+    console.log("Here is error of movie id");
     return next(createError(400));
   }
 
