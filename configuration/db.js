@@ -13,7 +13,7 @@ const dbConneciton = (coll, cb, coll2) => {
       client.close();
     })
     .catch((err) => {
-      console.log("have some error : ");
+      console.log("have some error : ", err);
     });
 };
 
