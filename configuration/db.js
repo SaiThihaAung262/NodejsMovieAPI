@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 
-const _uri = process.env.MONGODB_URI;
+const _uri =
+  "mongodb+srv://ThihaAung:tha26299@atlascluster.fqkbtmq.mongodb.net/?retryWrites=true&w=majority&appName=AtlasCluster";
 const dbConneciton = (coll, cb, coll2) => {
   MongoClient.connect(_uri)
     .then(async (client) => {

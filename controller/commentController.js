@@ -4,17 +4,6 @@ const { Comment } = require("../models");
 const { dbCon } = require("../configuration");
 
 const postComment = (req, res, next) => {
-  /**
-   *Parameters for created Comments
-   * _id
-   * userId>req.user._id
-   * username>req.user.username
-   * movieId>req.body.movieId
-   * text>req.body.text
-   */
-
-  console.log(req.body);
-
   if (!ObjectID.isValid(req.body.movieId)) {
     console.log("Here is error of movie id");
     return next(createError(400));
@@ -96,8 +85,9 @@ const getComment = (req, res, next) => {
   let searchParam = {};
 
   if (req.query.movieId !== undefined) {
-    searchParam.movieId = new ObjectID(req.query.movieId);
+    searchParam._id = new ObjectID(req.query.movieId);
   }
+
   const commentsToSkip = (page - 1) * pageSize;
   dbCon("comments", async (db) => {
     const movies = await db
@@ -108,6 +98,8 @@ const getComment = (req, res, next) => {
       .toArray();
 
     const total = await db.find(searchParam).count();
+
+    console.log(total);
 
     if (movies.length > 0) {
       res.json({
