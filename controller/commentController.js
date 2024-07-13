@@ -1,7 +1,7 @@
 const { ObjectID } = require("bson");
 const createError = require("http-errors");
 const { Comment } = require("../models");
-const { dbCon } = require("../configuration");
+const { dbCon, logger } = require("../configuration");
 
 const postComment = (req, res, next) => {
   if (!ObjectID.isValid(req.body.movieId)) {
@@ -76,6 +76,9 @@ const deleteComment = (req, res, next) => {
 };
 
 const getComment = (req, res, next) => {
+  // logger.log(`This user is searching on ${new Date()} comments`);
+  logger.info(`This user is searching on ${new Date()} comments`);
+
   if (isNaN(req.query.page) || isNaN(req.query.pagesize)) {
     return next(createError(400));
   }

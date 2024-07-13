@@ -1,10 +1,10 @@
-const { createLogger, transports } = require('winston');
+const { createLogger, transports } = require("winston");
 
 const inforLogger = createLogger({
   transports: [
     new transports.File({
-      filename: './logs/infoLogs.log',
-      level: 'info',
+      filename: "./logs/infoLogs.log",
+      level: "info",
     }),
   ],
 });
