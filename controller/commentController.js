@@ -88,7 +88,8 @@ const getComment = (req, res, next) => {
   let searchParam = {};
 
   if (req.query.movieId !== undefined) {
-    searchParam._id = new ObjectID(req.query.movieId);
+    console.log(req.query.movieId);
+    searchParam.movieId = new ObjectID(req.query.movieId);
   }
 
   const commentsToSkip = (page - 1) * pageSize;
